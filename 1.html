@@ -18,20 +18,10 @@
         width: 100%;
         top: 0;
         bottom: 0;
-        /*background: #636363;*/
-        padding: 60px 10px 10px 10px;
+        background: #636363;
+        padding: 10px;
         cursor: pointer;
         opacity: 0.97;
-        text-align: center;
-        margin-left: -10px;
-    }
-
-    #explor>.title {
-        height: 100px;
-    /*display: block;*/
-    line-height: 100px;
-    font-size: 2.3em;
-    color: #c30d0d;
     }
     
     .folder {
@@ -39,24 +29,19 @@
         position: relative;
         width: 200px;
         height: 140px;
-        /*background: #5d5d5d;*/
+        background: #5d5d5d;
         border: 1px solid #adacac;
         border-radius: 10px;
         text-align: center;
         margin: 5px 5px;
         cursor: pointer;
-        box-shadow: 8px 8px 5px #55bac1;
+        box-shadow: 10px 10px 5px #444;
     }
-    .folder>div {
-        width: 200px;
-        height: 140px;
-        display: table;
-    }
-    .folder>div>span {
-        display: table-cell;
-        vertical-align: middle;
+    
+    .folder>span {
+        line-height: 140px;
         font-size: 2em;
-        text-shadow: 2px 2px 6px #807873;
+        text-shadow: 5px 2px 6px #333333;
     }
     
     .folder>div {
@@ -72,7 +57,7 @@
     }
     
     #screen {
-        /*background: #545454;*/
+        background: #545454;
         position: relative;
         bottom: 0;
     }
@@ -150,7 +135,6 @@
 
 <body>
     <div id="explor">
-        <div  class="title"><span>左云县国家税务局税收管理展示平台</span></div>
     </div>
     <div id="screen">
         <div class="header">
@@ -173,7 +157,7 @@
         var curFolder = '';
 
         $.each(photos, function(i) {
-            $('#explor').append('<div class="folder"><div><span>' + i + '</span><div><div></div></div>');
+            $('#explor').append('<div class="folder"><span>' + i + '</span><div></div></div>');
         });
 
         $('#screen').css({
