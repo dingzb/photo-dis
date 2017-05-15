@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/> -->
+    <title>照片展示</title>
+    <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="photo.js" type="text/javascript"></script>
+    <style type="text/css">
+    body {
+        margin: 0;
+        font-family: "Microsoft Yahei", Tahoma, Geneva, sans-serif;
+    }
+    
+    #explors {
+        position: fixed;
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+        cursor: pointer;
+        text-align: center;
+        margin-left: -10px;
+    }
+    
+    #explor {
+        position: fixed;
+        width: 100%;
+        /*        top: 0;
+        bottom: 0;
+*/
+        /*background: #636363;*/
+        padding: 10px 10px 10px 10px;
+        cursor: pointer;
+        /*opacity: 0.97;*/
+        text-align: center;
+        margin-left: -10px;
+    }
+    
+    .title {
+        height: 100px;
+        /*display: block;*/
+        line-height: 100px;
+        font-size: 2.3em;
+        color: #c30d0d;
+    }
+    
+    .folder {
+        display: inline-block;
+        position: relative;
+        width: 200px;
+        height: 140px;
+        /*background: #5d5d5d;*/
+        border: 1px solid #adacac;
+        border-radius: 10px;
+        text-align: center;
+        margin: 5px 5px;
+        cursor: pointer;
+        box-shadow: 8px 8px 5px #55bac1;
+    }
+    
+    .folder>div {
+        width: 200px;
+        height: 140px;
+        display: table;
+    }
+    
+    .folder>div>span {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 2em;
+        text-shadow: 2px 2px 6px #807873;
+    }
+    
+    .folder>div {
+        width: 200px;
+        height: 140px;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    #screen {
+        /*background: #545454;*/
+        position: relative;
+        bottom: 0;
+    }
+    
+    .header {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background: #191818;
+        opacity: 0.5;
+    }
+    
+    #title {
+        line-height: 50px;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        cursor: pointer;
+        color: #ffffff;
+        display: none;
+    }
+    
+    #return {
+        line-height: 50px;
+        position: relative;
+        left: 10px;
+        cursor: pointer;
+        color: #13B1BF;
+        display: none;
+    }
+    
+    .photo {
+        position: absolute;
+        margin-top: 100px;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+    
+    .photo > img {
+        max-width: 900px;
+        max-height: 500px;
+        display: none;
+    }
+    
+    .photo > video {
+        max-width: 900px;
+        max-height: 500px;
+        display: none;
+    }
+    
+    #previous,
+    #next {
+        margin-top: 300px;
+        position: absolute;
+        display: inline-block;
+        cursor: pointer;
+        z-index: 1;
+    }
+    
+    #previous {
+        left: 40px;
+    }
+    
+    #next {
+        right: 40px;
+    }
+    
+    #show {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="explors">
+        <div class="title"><span>左云县国家税务局税收管理展示平台</span></div>
+    </div>
+    <div id="explor">
+        <div class="title"><span>左云县国家税务局税收管理展示平台</span></div>
+    </div>
+    <div id="screen">
+        <div class="header">
+            <span id="title"></span>
+            <span id="return">返回</span>
+        </div>
+        <div id="show">
+            <span id="previous">上一张</span>
+            <span id="next">下一张</span>
+            <div class="photo">
+                <img id="img" />
+                <video id="video" autoplay="autoplay" loop="loop" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function() {
+
+        var curSrc = 0;
+        var curFolder = '';
+
+        $.each(photos, function(i) {
+            $('#explor').append('<div class="folder"><div><span>' + i + '</span><div><div></div></div>');
+        });
+
+        $('#screen').css({
+            top: window.innerHeight + 'px'
+        });
+
+        $(".folder").bind("click", function(e) {
+            $('#explor').animate({
+                top: window.innerHeight + 'px'
+            }, 700);
+
+            $('.header').animate({
+                height: '50px'
+            }, 700);
+
+            $('#screen').animate({
+                top: 0,
+                height: window.innerHeight + 'px'
+            }, 700, function() {
+                $('.header').css({
+                    height: '50px'
+                });
+                $('#return').css({
+                    display: 'inline-block'
+                });
+                $('#title').css({
+                    display: 'inline-block'
+                });
+                $('#show').css({
+                    display: 'inline-block'
+                });
+            });
+
+            curFolder = $(this).find('span').text();
+            curSrc = 0;
+            showImgVide(photos[curFolder][0])
+            $('#title').text(curFolder)
+        });
+
+        $('#return').bind('click', function() {
+            $('#explor').animate({
+                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
+            }, 700);
+
+            $('.header').animate({
+                height: '0'
+            }, 700);
+
+            $('#screen').animate({
+                top: window.innerHeight + 'px',
+                height: 0
+            }, 700, function() {
+                $('.header').css({
+                    height: 0
+                });
+                $('#return').css({
+                    display: 'none'
+                });
+                $('#title').css({
+                    display: 'none'
+                });
+                $('#show').css({
+                    display: 'none'
+                });
+            });
+
+            curFolder = '';
+            curSrc = 0;
+        });
+
+
+
+        $('#next').bind('click', next);
+
+        $('#previous').bind('click', previous);
+
+        $(document).keydown(function(event) {
+            if (curFolder) {
+                if (event.keyCode == 37) {
+                    previous();
+                } else if (event.keyCode == 39) {
+                    next();
+                }
+            }
+        });
+
+        function previous() {
+            if (curSrc === 0) {
+                curSrc = photos[curFolder].length;
+            }
+            showImgVide(photos[curFolder][--curSrc]);
+        }
+
+        function next() {
+            if (++curSrc === photos[curFolder].length) {
+                curSrc = 0;
+            }
+            showImgVide(photos[curFolder][curSrc]);
+        }
+
+        function showImgVide(src) {
+            if (src.endsWith('.mp4')) {
+                $('#video').attr('src', src);
+                $('#video').css('display', 'inline-block');
+                $('#img').css('display', 'none');
+                $('#img').attr('src', '');
+            } else {
+                $('#img').attr('src', src);
+                $('#img').css('display', 'inline-block');
+                $('#video').css('display', 'none');
+                $('#video').attr('src', '');
+            }
+        }
+
+        $(window).resize(function() {
+            $('#explor').css({
+                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
+            });
+        });
+
+        $(window).resize();
+    });
+    </script>
+</body>
+
+</html>
