@@ -13,21 +13,74 @@
         font-family: "Microsoft Yahei", Tahoma, Geneva, sans-serif;
     }
     
+    #explors {
+        position: fixed;
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+        /*cursor: pointer;*/
+        text-align: center;
+        margin-left: -10px;
+        overflow: auto;
+    }
+    
+    .agency {
+        display: inline-block;
+        position: relative;
+        width: 200px;
+        height: 140px;
+        /*background: #5d5d5d;*/
+        border: 1px solid #adacac;
+        border-radius: 10px;
+        text-align: center;
+        margin: 5px 5px;
+        cursor: pointer;
+        box-shadow: 8px 8px 5px #55bac1;
+    }
+    
+    .agency>div {
+        width: 200px;
+        height: 140px;
+        display: table;
+    }
+    
+    .agency>div>span {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 2em;
+        text-shadow: 2px 2px 6px #807873;
+    }
+    
+    .agency>div {
+        width: 200px;
+        height: 140px;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+    }
+    
     #explor {
         position: fixed;
         width: 100%;
-        /*        top: 0;
-        bottom: 0;
-*/
         /*background: #636363;*/
         padding: 10px 10px 10px 10px;
-        cursor: pointer;
+        /*cursor: pointer;*/
         /*opacity: 0.97;*/
         text-align: center;
         margin-left: -10px;
     }
     
-    #explor>.title {
+    #return-to-agency {
+        text-align: left;
+        padding-left: 20px;
+        cursor: pointer;
+    }
+    
+    .return {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .title {
         height: 100px;
         /*display: block;*/
         line-height: 100px;
@@ -86,13 +139,11 @@
         width: 100%;
         background: #191818;
         opacity: 0.5;
+        text-align: center;
     }
     
     #title {
         line-height: 50px;
-        position: relative;
-        left: 50%;
-        right: 50%;
         cursor: pointer;
         color: #ffffff;
         display: none;
@@ -100,16 +151,18 @@
     
     #return {
         line-height: 50px;
-        position: relative;
+        position: absolute;
+        float: left;
         left: 10px;
         cursor: pointer;
         color: #13B1BF;
         display: none;
+        margin-top: 6px;
     }
     
     .photo {
         position: absolute;
-        margin-top: 100px;
+        margin-top: 80px;
         left: 0;
         right: 0;
         text-align: center;
@@ -147,17 +200,37 @@
     #show {
         display: none;
     }
+
+    #desc{
+        position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    }
+    #desc>span{
+         max-width: 300px;
+    display: inline-block;
+    text-align: left;
+/*    background-color: #dff;
+    border: 1px dotted;
+    border-radius: 10px;*/
+    opacity: 0.8;
+    }
     </style>
 </head>
 
 <body>
-    <div id="explor">
+    <div id="explors">
         <div class="title"><span>左云县国家税务局税收管理展示平台</span></div>
+    </div>
+    <div id="explor">
+        <div id="return-to-agency"><img class="return" alt="返回" src="img/return.png"></div>
+        <div id="agencyName" class="title"><span></span></div>
     </div>
     <div id="screen">
         <div class="header">
+            <span id="return"><img class="return" alt="返回" src="img/return2.png"></span>
             <span id="title"></span>
-            <span id="return">返回</span>
         </div>
         <div id="show">
             <span id="previous">上一张</span>
@@ -166,6 +239,7 @@
                 <img id="img" />
                 <video id="video" autoplay="autoplay" loop="loop" />
             </div>
+            <div id="desc"><span>斯蒂芬的税收管理展示平台</span></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -174,50 +248,147 @@
         var curSrc = 0;
         var curFolder = '';
 
-        $.each(photos, function(i) {
-            $('#explor').append('<div class="folder"><div><span>' + i + '</span><div><div></div></div>');
+        var agencyDis = true;
+        var photoGroupDis = false;
+        var photoDis = false;
+
+        var ps = [];
+        
+        $.each(agencyPhotos, function(ag) {
+            $('#explors').append('<div id="agencyGroup_' + ag + '"></div>');
+            var agencyLine = $('#agencyGroup_' + ag);
+            $.each(agencyPhotos[ag], function(a) {
+                agencyLine.append('<div class="agency"><div><span>' + a + '</span><div><div></div></div>');
+            });
+            // $('#explors').append('<div class="folder"><div><span>' + i + '</span><div><div></div></div>');
         });
 
         $('#screen').css({
-            top: window.innerHeight + 'px'
+            top: window.innerHeight
         });
 
-        $(".folder").bind("click", function(e) {
-            $('#explor').animate({
+        $('#explor').css({
+            top: window.innerHeight
+        });
+
+        $(".agency").bind("click", function(e) {
+
+            $('#explors').animate({
                 top: window.innerHeight + 'px'
             }, 700);
+            var agencyName = $(this).text();
+            $('#agencyName').find('span').text(agencyName);
+            $('#explor').find('div[id^="photoGroup_"]').remove();
 
-            $('.header').animate({
-                height: '50px'
-            }, 700);
+            var agIndex = $(this).parent().attr('id').split('_')[1];
 
-            $('#screen').animate({
-                top: 0,
-                height: window.innerHeight + 'px'
-            }, 700, function() {
-                $('.header').css({
-                    height: '50px'
+            var photoGroup = agencyPhotos[agIndex][agencyName];
+
+            $.each(photoGroup, function(pg) {
+
+                $('#explor').append('<div id="photoGroup_' + pg + '"></div>');
+                var photoLine = $('#photoGroup_' + pg);
+                $.each(photoGroup[pg], function(p) {
+                    photoLine.append('<div id="photo_' + agIndex + '_' +agencyName+ '_' + pg + '_' + p + '" class="folder"><div><span>' + p + '</span><div><div></div></div>');
                 });
-                $('#return').css({
-                    display: 'inline-block'
-                });
-                $('#title').css({
-                    display: 'inline-block'
-                });
-                $('#show').css({
-                    display: 'inline-block'
-                });
+                folderBind();
             });
 
-            curFolder = $(this).find('span').text();
-            curSrc = 0;
-            showImgVide(photos[curFolder][0])
-            $('#title').text(curFolder)
+            var tv = ($(window).height() - $('#explors').outerHeight()) / 2 - 50;
+            $('#explor').animate({
+                top: tv
+            }, 700);
+
+            $('#return-to-agency').animate({
+                marginTop: 5 - tv,
+                paddingBottom: tv - 5
+            }, 700);
+
+
+            agencyDis = false;
+            photoGroupDis = true;
         });
 
-        $('#return').bind('click', function() {
+        $('#return-to-agency').bind('click', function(e) {
             $('#explor').animate({
-                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
+                top: window.innerHeight
+            }, 700);
+            $('#return-to-agency').animate({
+                    marginTop: 0,
+                    paddingBottom: 0
+                }, 700);
+            $('#explors').animate({
+                top: ($(window).height() - $('#explors').outerHeight()) / 2 - 50
+            }, 700);
+            agencyDis = true;
+            photoGroupDis = false;
+        });
+
+        function folderBind() {
+            $(".folder").bind("click", function(e) {
+
+                $('#explor').animate({
+                    top: window.innerHeight + 'px'
+                }, 700);
+
+                $('#return-to-agency').animate({
+                    marginTop: 0,
+                    paddingBottom: 0
+                }, 700);
+
+
+                $('.header').animate({
+                    height: '50px'
+                }, 700);
+
+                $('#screen').animate({
+                    top: 0,
+                    height: window.innerHeight + 'px'
+                }, 700, function() {
+                    $('.header').css({
+                        height: '50px'
+                    });
+                    $('#return').css({
+                        display: 'inline-block'
+                    });
+                    $('#title').css({
+                        display: 'inline-block'
+                    });
+                    $('#show').css({
+                        display: 'inline-block'
+                    });
+                });
+
+                curFolder = $(this).find('span').text();
+                curSrc = 0;
+                var ids = $(this).attr('id').split('_');
+
+                ps = agencyPhotos[ids[1]][ids[2]][ids[3]][ids[4]];
+                console.info(ps);
+                $.each(ps[0], function(src){
+                    console.info(src)
+                    showImgVide(src);
+                    setDesc(ps[0][src]);
+                })
+                
+
+                $('#title').text(curFolder)
+
+                photoGroupDis = false;
+                photoDis = true
+            });
+        }
+
+        $('#return').bind('click', function() {
+
+            var tv = ($(window).height() - $('#explors').outerHeight()) / 2 - 50;
+            $('#explor').animate({
+                top: tv
+            }, 700);
+
+            $('#return-to-agency').animate({
+                marginTop: 5 - tv,
+                paddingBottom: tv - 5
             }, 700);
 
             $('.header').animate({
@@ -244,6 +415,9 @@
 
             curFolder = '';
             curSrc = 0;
+
+            photoGroupDis = true;
+            photoDis = false
         });
 
 
@@ -263,17 +437,36 @@
         });
 
         function previous() {
+            // if (curSrc === 0) {
+            //     curSrc = agencyPhotos[curFolder].length;
+            // }
+            // showImgVide(agencyPhotos[curFolder][--curSrc]);
+
             if (curSrc === 0) {
-                curSrc = photos[curFolder].length;
+                curSrc = ps.length;
             }
-            showImgVide(photos[curFolder][--curSrc]);
+            $.each(ps[--curSrc], function(s){
+                setDesc(ps[curSrc][s]);
+                showImgVide(s);
+            })
+            
         }
 
         function next() {
-            if (++curSrc === photos[curFolder].length) {
+            // if (++curSrc === agencyPhotos[curFolder].length) {
+            //     curSrc = 0;
+            // }
+            // showImgVide(agencyPhotos[curFolder][curSrc]);
+
+            if (++curSrc === ps.length) {
                 curSrc = 0;
             }
-            showImgVide(photos[curFolder][curSrc]);
+            console.info(ps)
+            $.each(ps[curSrc], function(s){
+                setDesc(ps[curSrc][s]);
+                showImgVide(s);
+
+            })
         }
 
         function showImgVide(src) {
@@ -290,10 +483,28 @@
             }
         }
 
+        function setDesc(desc){
+            $('#desc').text(desc);
+        }
+
         $(window).resize(function() {
-            $('#explor').css({
-                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
-            });
+            if (agencyDis) {
+                $('#explors').css({
+                    top: ($(window).height() - $('#explors').outerHeight()) / 2 - 50
+                });
+            }
+
+            if (photoGroupDis) {
+                var tv = ($(window).height() - $('#explors').outerHeight()) / 2 - 50;
+                $('#explor').css({
+                    top: tv
+                });
+                $('#return-to-agency').css({
+                    marginTop: 10 - tv,
+                    paddingBottom: tv - 10
+                });
+            }
+
         });
 
         $(window).resize();
