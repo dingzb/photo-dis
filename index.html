@@ -16,22 +16,23 @@
     #explor {
         position: fixed;
         width: 100%;
-        top: 0;
+        /*        top: 0;
         bottom: 0;
+*/
         /*background: #636363;*/
-        padding: 60px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
         cursor: pointer;
-        opacity: 0.97;
+        /*opacity: 0.97;*/
         text-align: center;
         margin-left: -10px;
     }
-
+    
     #explor>.title {
         height: 100px;
-    /*display: block;*/
-    line-height: 100px;
-    font-size: 2.3em;
-    color: #c30d0d;
+        /*display: block;*/
+        line-height: 100px;
+        font-size: 2.3em;
+        color: #c30d0d;
     }
     
     .folder {
@@ -47,11 +48,13 @@
         cursor: pointer;
         box-shadow: 8px 8px 5px #55bac1;
     }
+    
     .folder>div {
         width: 200px;
         height: 140px;
         display: table;
     }
+    
     .folder>div>span {
         display: table-cell;
         vertical-align: middle;
@@ -117,13 +120,12 @@
         max-height: 500px;
         display: none;
     }
-
+    
     .photo > video {
         max-width: 900px;
         max-height: 500px;
         display: none;
     }
-    
     
     #previous,
     #next {
@@ -150,7 +152,7 @@
 
 <body>
     <div id="explor">
-        <div  class="title"><span>左云县国家税务局税收管理展示平台</span></div>
+        <div class="title"><span>左云县国家税务局税收管理展示平台</span></div>
     </div>
     <div id="screen">
         <div class="header">
@@ -161,8 +163,8 @@
             <span id="previous">上一张</span>
             <span id="next">下一张</span>
             <div class="photo">
-                <img id="img"/>
-                <video id="video" autoplay="autoplay" loop="loop"/> 
+                <img id="img" />
+                <video id="video" autoplay="autoplay" loop="loop" />
             </div>
         </div>
     </div>
@@ -215,7 +217,7 @@
 
         $('#return').bind('click', function() {
             $('#explor').animate({
-                top: 0
+                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
             }, 700);
 
             $('.header').animate({
@@ -274,19 +276,27 @@
             showImgVide(photos[curFolder][curSrc]);
         }
 
-        function showImgVide(src){
-        	if (src.endsWith('.mp4')) {
-        		$('#video').attr('src', src);
-        		$('#video').css('display', 'inline-block');
-        		$('#img').css('display', 'none');
+        function showImgVide(src) {
+            if (src.endsWith('.mp4')) {
+                $('#video').attr('src', src);
+                $('#video').css('display', 'inline-block');
+                $('#img').css('display', 'none');
                 $('#img').attr('src', '');
-        	} else {
-        		$('#img').attr('src', src);
-        		$('#img').css('display', 'inline-block');
-        		$('#video').css('display', 'none');
+            } else {
+                $('#img').attr('src', src);
+                $('#img').css('display', 'inline-block');
+                $('#video').css('display', 'none');
                 $('#video').attr('src', '');
-        	}
+            }
         }
+
+        $(window).resize(function() {
+            $('#explor').css({
+                top: ($(window).height() - $('#explor').outerHeight()) / 2 - 50
+            });
+        });
+
+        $(window).resize();
     });
     </script>
 </body>
