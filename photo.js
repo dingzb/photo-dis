@@ -3,7 +3,7 @@ var allPhotos = [{
     "第一组": [{
         '税源管理股': [{
             '生活': [{ 'data/01.png': '开发会' }, { 'data/02.png': '研讨会' }, { 'data/03.png': '调研会' }],
-            '工作风险安全防控': [{ 'data/04.png': 'aa' }, { 'video/香肠派对BD1280高清中英双字.mp4': 'bb' }, { 'data/06.png': 'cc' }],
+            '工作风险安全防控': [{ 'data/04.png': 'aa' }, { 'video/独立日.BD1280高清国英双语中英双字.mp4': 'bb' }, { 'data/06.png': 'cc' }],
             '生活1': [{ 'data/07.png': 'dd' }, { 'data/08.png': 'ee' }, { 'data/09.png': 'ff' }]
         }, {
             '工作1': [{ 'ig/4.jpg': 'gg' }, { 'ig/5.jpg': 'hh' }, { 'ig/6.jpg': 'ii' }],

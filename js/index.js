@@ -220,6 +220,9 @@ $(function() {
 
     $('#return').bind('click', function() {
 
+        $('#img').attr('src', '');
+        $('#video').attr('src', '');
+
         var tv = ($(window).height() - $('#explors').outerHeight()) / 2 - 50;
         $('#explor').animate({
             top: tv
@@ -392,9 +395,9 @@ $(function() {
 
     $(window).resize();
     $(".photo").on("swipeleft", function() {
-        previous();
+        next();
     });
     $(".photo").on("swiperight", function() {
-        next();
+        previous();
     });
 });
