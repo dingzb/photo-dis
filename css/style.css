@@ -18,13 +18,13 @@ body {
     position: relative;
     width: 200px;
     height: 140px;
-    /*background: #5d5d5d;*/
+    background: #fffff5;
     border: 1px solid #adacac;
     border-radius: 10px;
     text-align: center;
     margin: 5px 5px;
     cursor: pointer;
-    box-shadow: 8px 8px 5px #55bac1;
+    box-shadow: 8px 8px 5px #3d413d;
 }
 
 .thirdFolder>div {
@@ -62,13 +62,13 @@ body {
     position: relative;
     width: 200px;
     height: 140px;
-    /*background: #5d5d5d;*/
+    background: #fffff5;
     border: 1px solid #adacac;
     border-radius: 10px;
     text-align: center;
     margin: 5px 5px;
     cursor: pointer;
-    box-shadow: 8px 8px 5px #55bac1;
+    box-shadow: 8px 8px 5px #3d413d;
 }
 
 .agency>div {
@@ -125,7 +125,7 @@ body {
     /*display: block;*/
     line-height: 100px;
     font-size: 2.3em;
-    color: #c30d0d;
+    color: #fbff96;
 }
 
 .folder {
@@ -133,13 +133,13 @@ body {
     position: relative;
     width: 200px;
     height: 140px;
-    /*background: #5d5d5d;*/
+    background: #fffff5;
     border: 1px solid #adacac;
     border-radius: 10px;
     text-align: center;
     margin: 5px 5px;
     cursor: pointer;
-    box-shadow: 8px 8px 5px #55bac1;
+    box-shadow: 8px 8px 5px #3d413d;
 }
 
 .folder>div {
